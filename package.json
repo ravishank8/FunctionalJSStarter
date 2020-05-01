@@ -1,0 +1,15 @@
+{
+  "name": "funcprog",
+  "version": "1.0.0",
+  "description": "Functional Programming Examples",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "functional",
+    "programming"
+  ],
+  "author": "Ravi Shankar",
+  "license": "ISC"
+}
