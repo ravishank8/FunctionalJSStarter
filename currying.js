@@ -1,6 +1,9 @@
-
-const ffun = function(a, b, c) {
-    return a + b + c;
+const pipe = function(...fns) {
+    return function(x) {
+        return fns.reduce(function(v, f) {
+            return f(v);
+        }, x);
+    }
 };
 
 function curry(fn,arity = fn.length) {
@@ -14,37 +17,19 @@ function curry(fn,arity = fn.length) {
                 return nextCurried( args );
             }
         };
-    })( [5] );
+    })( [] );
 }
 
-const pipe = function(...fns) {
-    return function(x) {
-        return fns.reduce(function(v, f) {
-            return f(v);
-        }, x);
-    }
-};
+const addNums = (a, b, c) => a + b + c;
 
-const gfun = function(d, e) {
-    return d + e;
-};
+const multiplyNums = (a, b, c) => a * b * c;
 
-const hfun = function(f, g, h) {
-    return f + g + h;
-};
+const squareNum = x => x * x;
 
-/*const curriedF = curry(ffun);
-const curriedG = curry(gfun);
-const curriedH = curry(hfun);
+const numTransformPipeline = pipe(
+    squareNum,
+    curry(addNums)(2)(3),
+    curry(multiplyNums)(2)(3)
+);
 
-const newFun = pipe (
-    curriedF(1)(2),
-    curriedG(4),
-    curriedH(5)(6));*/
-
-const newFun = pipe (
-    curry(ffun)(1)(2),
-    curry(gfun)(4),
-    curry(hfun)(5)(6));
-
-console.log(newFun(10));    
+console.log(numTransformPipeline(2));
