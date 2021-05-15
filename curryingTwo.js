@@ -38,12 +38,63 @@ function bubbleSortArray(initialArray){
     return initialArray;
 }
 
+function quickSortArray(toSortArray, startIndex, endIndex){
+    
+    var pivot = startIndex;
+    var upIncrement = startIndex + 1;
+    var downIncrement = endIndex;
+
+    var temp;
+
+    while((downIncrement > 0) && (downIncrement > pivot)){
+       if((toSortArray[upIncrement]) > toSortArray[pivot]){
+           if(toSortArray[downIncrement] < toSortArray[pivot]){
+                if(downIncrement < upIncrement){
+                    temp = toSortArray[pivot];
+                    toSortArray[pivot] = toSortArray[downIncrement];
+                    toSortArray[downIncrement] = temp;
+                    break;
+                } else{
+                    temp = toSortArray[upIncrement];
+                    toSortArray[upIncrement] = toSortArray[downIncrement];
+                    toSortArray[downIncrement] = temp;
+                    upIncrement++;
+                    downIncrement--;
+                    continue;
+                }    
+            }else {
+                downIncrement--;
+                continue;
+            }
+        } else {
+            upIncrement++;
+            continue;
+        }    
+    }
+
+    if(downIncrement > pivot){
+        quickSortArray(toSortArray, pivot, downIncrement);
+    }
+    if (upIncrement < endIndex){
+        quickSortArray(toSortArray, upIncrement, toSortArray.length -1);
+    }
+
+}
+
+function quickSort(toBeSortedArray){
+    toBeSortedArray.push(999);
+    console.log(toBeSortedArray);
+    quickSortArray(toBeSortedArray, 0, toBeSortedArray.length -1);
+    console.log(toBeSortedArray);
+    return toBeSortedArray;
+}
+
+//quickSort(toBeSortedArray);
+
+
 function binarySearchInArray(number, arr, searchIteration = 0){
     searchIteration++;
-    console.log("Iteration is " + searchIteration);
-    console.log("Number is " + number);
-    console.log("arr is " + arr);
-    console.log(arr);
+    
     arrLength = arr.length;
     if(arr.length > 1){
         if(arrLength%2 === 0){
@@ -73,15 +124,22 @@ function binarySearchInArray(number, arr, searchIteration = 0){
     }    
 }
 
-console.log(toBeSortedArray);
+// console.log(toBeSortedArray);
 
-//binarySearchInArray(bubbleSortArray(toBeSortedArray),0);
+// binarySearchInArray(bubbleSortArray(toBeSortedArray),0);
 
-const pipingFunctions = pipe(
+/** 
+   const pipingFunctions = pipe(
    bubbleSortArray,
    curry(binarySearchInArray)(0)
-);
+); 
+
+pipingFunctions(toBeSortedArray);*/
+
+//console.log(toBeSortedArray);
+
+const pipingFunctions = pipe(
+    quickSort,
+    curry(binarySearchInArray)(0));
 
 pipingFunctions(toBeSortedArray);
-
-console.log(toBeSortedArray);
